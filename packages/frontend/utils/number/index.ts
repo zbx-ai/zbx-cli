@@ -4,7 +4,7 @@ export const toNumber = (value: string): number => {
   return Number.isNaN(num) ? 0 : num;
 };
 
-// 去数组中数字的中位数
+// 取数组中数字的中位数
 export const median = (arr: number[]): number => {
   if (arr.length === 0) return 0;
   const sorted = [...arr].sort((a, b) => a - b);
