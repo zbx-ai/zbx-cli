@@ -23,7 +23,7 @@ export type NumberFormationProps = {
   /**
    * @description 是否使用千分位分隔符
    */
-  thousandSeparator?: boolean | ",";
+  thousandSeparator?: boolean | string;
 
   /**
    * @description 前缀

@@ -1,10 +1,10 @@
 // 转换为数字，并判断 NaN
 export const toNumber = (value: string): number => {
-  const num = Number(value.replace(/[^0-9.]/gi, ""));
+  const num = Number(value.replace(/[^0-9.]/g, ""));
   return Number.isNaN(num) ? 0 : num;
 };
 
-// 去数组中数字的中位数
+// 取数组中数字的中位数
 export const median = (arr: number[]): number => {
   if (arr.length === 0) return 0;
   const sorted = [...arr].sort((a, b) => a - b);
