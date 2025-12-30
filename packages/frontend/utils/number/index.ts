@@ -1,6 +1,6 @@
 // 转换为数字，并判断 NaN
 export const toNumber = (value: string): number => {
-  const num = Number(value.replace(/[^0-9.]/gi, ""));
+  const num = Number(value.replace(/[^0-9.]/g, ""));
   return Number.isNaN(num) ? 0 : num;
 };
 
