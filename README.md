@@ -44,6 +44,9 @@ Create a `zbx.config.ts` in your project root:
 
 ```typescript
 export default {
+  // Optional: Custom registry URL (defaults to https://raw.githubusercontent.com/zbx-ai/zbx-cli/main)
+  // The CLI will look for ${registry}/registry.json
+  registry: 'https://raw.githubusercontent.com/your-org/your-repo/main',
   paths: {
     'frontend/utils': 'src/shared/utils',
     'backend/utils': 'server/utils',
@@ -51,6 +54,19 @@ export default {
   }
 }
 ```
+
+### Registry Management
+
+To use this CLI with your own repository, you need to generate a `registry.json` file.
+
+1.  Place your shared code in the `packages` directory.
+2.  Run the build script to generate `registry.json`:
+
+```bash
+npm run build:registry
+```
+
+3.  Commit and push `registry.json` to your repository.
 
 ### Commands
 

@@ -1,0 +1,14 @@
+{
+  "backend/utils": {
+    "files": [
+      "index.ts"
+    ],
+    "type": "utils"
+  },
+  "frontend/utils": {
+    "files": [
+      "index.ts"
+    ],
+    "type": "utils"
+  }
+}

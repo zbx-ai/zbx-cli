@@ -5,41 +5,55 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { loadConfig } from '../utils/config';
 
+// 定义 Registry 类型
+interface RegistryItem {
+  files: string[];
+  type: string;
+}
+
+interface Registry {
+  [key: string]: RegistryItem;
+}
+
 export const addCommand = new Command('add')
   .description('Add a shared resource to your project')
   .argument('<resource>', 'Resource path (e.g., frontend/utils)')
   .action(async (resource: string) => {
-    const spinner = ora(`Adding ${resource}...`).start();
+    const spinner = ora(`Checking registry...`).start();
     
     try {
       const config = loadConfig();
-      
-      // 假设 CLI 运行时，packages 目录在 CLI 项目根目录下
-      // __dirname 在 ts-node 下是 src/commands，在 build 后是 dist/commands
-      // 我们需要找到项目根目录
-      
-      // 简单的向上查找逻辑，或者假设结构固定
-      // 如果是 ts-node 运行 src/commands/add.ts -> ../../packages
-      // 如果是 node 运行 dist/commands/add.js -> ../../packages
-      
-      const cliRoot = path.resolve(__dirname, '../../');
-      const sourcePath = path.join(cliRoot, 'packages', resource);
-      
-      if (!fs.existsSync(sourcePath)) {
-        spinner.fail(`Resource not found: ${resource}`);
-        console.log(chalk.red(`Looked in: ${sourcePath}`));
-        console.log(chalk.yellow(`Available packages:`));
-        const packagesDir = path.join(cliRoot, 'packages');
-        if (fs.existsSync(packagesDir)) {
-            const items = fs.readdirSync(packagesDir);
-            items.forEach(item => {
-                console.log(`- ${item}`);
-            });
+      const registryBaseUrl = config.registry!.replace(/\/$/, ''); // 移除末尾斜杠
+      const registryUrl = `${registryBaseUrl}/registry.json`;
+
+      // 1. 获取 Registry 索引
+      let registry: Registry;
+      try {
+        const response = await fetch(registryUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch registry: ${response.statusText}`);
         }
+        registry = await response.json() as Registry;
+      } catch (e) {
+        spinner.fail(`Failed to connect to registry at ${registryUrl}`);
+        console.error(e);
         return;
       }
 
-      // 确定目标路径
+      // 2. 检查资源是否存在
+      const item = registry[resource];
+      if (!item) {
+        spinner.fail(`Resource not found: ${resource}`);
+        console.log(chalk.yellow(`Available packages:`));
+        Object.keys(registry).forEach(key => {
+            console.log(`- ${key}`);
+        });
+        return;
+      }
+
+      spinner.text = `Downloading ${resource}...`;
+
+      // 3. 确定目标路径
       let targetDir = config.paths[resource];
       
       if (!targetDir) {
@@ -58,11 +72,26 @@ export const addCommand = new Command('add')
       
       const targetPath = path.resolve(process.cwd(), targetDir);
       
-      // 复制文件
-      await fs.copy(sourcePath, targetPath, {
-        overwrite: true,
-        dereference: true,
-      });
+      // 4. 下载文件
+      for (const file of item.files) {
+        const fileUrl = `${registryBaseUrl}/packages/${resource}/${file}`;
+        const fileDest = path.join(targetPath, file);
+        
+        spinner.text = `Downloading ${file}...`;
+        
+        try {
+            const fileResponse = await fetch(fileUrl);
+            if (!fileResponse.ok) {
+                console.warn(chalk.yellow(`\nSkipping ${file}: ${fileResponse.statusText}`));
+                continue;
+            }
+            
+            const content = await fileResponse.text();
+            await fs.outputFile(fileDest, content);
+        } catch (e) {
+            console.error(chalk.red(`\nError downloading ${file}`));
+        }
+      }
       
       spinner.succeed(chalk.green(`Successfully added ${resource} to ${targetDir}`));
       

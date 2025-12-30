@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "build:registry": "ts-node scripts/build-registry.ts",
     "dev": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,11 +29,13 @@
     "packages/*"
   ],
   "dependencies": {
+    "@types/node-fetch": "^2.6.13",
     "chalk": "^4.1.2",
     "commander": "^11.1.0",
     "fs-extra": "^11.2.0",
     "inquirer": "^8.2.6",
     "jiti": "^1.21.0",
+    "node-fetch": "^3.3.2",
     "ora": "^5.4.1"
   },
   "devDependencies": {
