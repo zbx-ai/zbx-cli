@@ -7,7 +7,9 @@
   },
   "frontend/utils": {
     "files": [
-      "index.ts"
+      "number/formation.ts",
+      "number/index.ts",
+      "validate/index.ts"
     ],
     "type": "utils"
   }

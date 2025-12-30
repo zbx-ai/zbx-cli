@@ -37,6 +37,9 @@ async function buildRegistry() {
     for (const pkg of packages) {
       const pkgPath = path.join(categoryPath, pkg);
       if (!(await fs.stat(pkgPath)).isDirectory()) continue;
+      
+      // 过滤：忽略 node_modules 和隐藏目录
+      if (pkg === 'node_modules' || pkg.startsWith('.')) continue;
 
       const registryKey = `${category}/${pkg}`;
       const files: string[] = [];
@@ -49,10 +52,14 @@ async function buildRegistry() {
           const stat = await fs.stat(itemPath);
           
           if (stat.isDirectory()) {
+            // 递归时也要忽略 node_modules 和隐藏目录
+            const itemName = path.basename(itemPath);
+            if (itemName === 'node_modules' || itemName.startsWith('.')) continue;
+            
             await scanFiles(itemPath, baseDir);
           } else {
             // 忽略一些文件
-            if (item === 'package.json' || item.endsWith('.test.ts') || item.endsWith('.spec.ts')) return;
+            if (item === 'package.json' || item.endsWith('.test.ts') || item.endsWith('.spec.ts')) continue;
             
             const relativePath = path.relative(baseDir, itemPath);
             files.push(relativePath);
