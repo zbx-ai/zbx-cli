@@ -1,0 +1,45 @@
+{
+  "name": "zbx-cli",
+  "version": "1.0.0",
+  "description": "A CLI for managing shared utils and libs",
+  "main": "dist/index.js",
+  "bin": {
+    "zbx": "./bin/zbx.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "packages"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "monorepo",
+    "utils"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^8.2.6",
+    "jiti": "^1.21.0",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
