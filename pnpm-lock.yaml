@@ -49,6 +49,20 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
+  packages/backend:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
+  packages/frontend:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
+  packages/typescript-config: {}
+
 packages:
 
   '@cspotcode/source-map-support@0.8.1':
