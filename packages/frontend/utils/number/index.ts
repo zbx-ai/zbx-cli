@@ -31,7 +31,7 @@ export const applyThousandSeparator = (
 
 // 简单四舍五入并保留小数点后位数, 避免toFixed()函数的浮点数精度问题
 export const toRoundFixed = (num: number, scale: number): number => {
-  if (num && scale) {
+  if (typeof num === "number" && typeof scale === "number") {
     return Math.round(num * 10 ** scale) / 10 ** scale;
   }
   return num;
