@@ -72,6 +72,9 @@ export const addCommand = new Command('add')
       
       const targetPath = path.resolve(process.cwd(), targetDir);
       
+      // 确保目标目录存在
+      await fs.ensureDir(targetPath);
+
       // 4. 下载文件
       for (const file of item.files) {
         const fileUrl = `${registryBaseUrl}/packages/${resource}/${file}`;
