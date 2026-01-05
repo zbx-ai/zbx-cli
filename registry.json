@@ -5,6 +5,17 @@
     ],
     "type": "utils"
   },
+  "frontend/config": {
+    "files": [
+      "tailwindcss/postcss.config.js",
+      "tailwindcss/shared-styles.css"
+    ],
+    "type": "config"
+  },
+  "frontend/libs": {
+    "files": [],
+    "type": "libs"
+  },
   "frontend/utils": {
     "files": [
       "number/formation.ts",
