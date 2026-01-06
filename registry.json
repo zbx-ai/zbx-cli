@@ -5,23 +5,11 @@
     ],
     "type": "utils"
   },
-  "frontend/config": {
-    "files": [
-      "tailwindcss/postcss.config.js",
-      "tailwindcss/shared-styles.css"
-    ],
-    "type": "config"
-  },
-  "frontend/libs": {
-    "files": [
-      "bd/test.ts"
-    ],
-    "type": "libs"
-  },
   "frontend/utils": {
     "files": [
       "number/formation.ts",
       "number/index.ts",
+      "tailwindcss/globals.css",
       "validate/index.ts"
     ],
     "type": "utils"
